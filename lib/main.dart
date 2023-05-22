@@ -6,12 +6,12 @@ import 'package:test_file_streaming/test_better_page.dart';
 
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await FlutterDownloader.initialize(
       debug: false // optional: set to false to disable printing logs to console (default: true)
 
-      // option: set to false to disable working with http links (default: false)
+    // option: set to false to disable working with http links (default: false)
   );
-  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 

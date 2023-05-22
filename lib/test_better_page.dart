@@ -74,12 +74,12 @@ void initPlayerSecondTime() async {
     // TODO: implement initState
     super.initState();
 
-    //  initPlayerSecondTime();
-    initPlayer();
+    //initPlayerSecondTime();
+
     IsolateNameServer.registerPortWithName(_port.sendPort, 'downloader_send_port');
     _port.listen((dynamic data) async {
       String id = data[0];
-      DownloadTaskStatus status = data[1];
+      int status = data[1];
       int progress = data[2];
       print("id $id");
       print("status $status");
@@ -95,7 +95,7 @@ void initPlayerSecondTime() async {
             file,
           );
           _videoPlayerController.initialize().then((value) => setState(() => playerInitialized = true));
-          FlutterDownloader.pause(taskId: data[0]);
+          // FlutterDownloader.pause(taskId: data[0]);
 
           // _videoPlayerController.setOverriddenAspectRatio(16/9);
           
@@ -106,17 +106,14 @@ void initPlayerSecondTime() async {
 
       }
     });
-
     FlutterDownloader.registerCallback(downloadCallback);
-
+    initPlayer();
 
 
   }
 
-
-
   @pragma('vm:entry-point')
-  static void downloadCallback(String id, DownloadTaskStatus status, int progress) {
+  static void downloadCallback(String id, int status, int progress) {
     final SendPort? send = IsolateNameServer.lookupPortByName('downloader_send_port');
     send?.send([id, status, progress]);
   }
