@@ -21,6 +21,7 @@ class TestPage extends StatefulWidget {
 class _TestPageState extends State<TestPage> {
 
   late VideoPlayerController _videoPlayerController;
+
   bool playerInitialized = false;
 
   String fileName = "video7.mp4";
@@ -33,25 +34,6 @@ class _TestPageState extends State<TestPage> {
   String testVideoUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4";
 
   final ReceivePort _port = ReceivePort();
-
-void initPlayerSecondTime() async {
-    Directory appDocDirectory = await getApplicationDocumentsDirectory();
-    String path = "${appDocDirectory.path}/videos";
-    await Directory(path).create(recursive: true);
-
-    filePath =  path + "/" +fileName;
-    var file = File(filePath);
-    /// You can change this to  VideoPlayerController.file
-    _videoPlayerController = VideoPlayerController.network(
-      file.path,
-    );
-    _videoPlayerController.initialize().then((value) => setState(() {
-
-      playerInitialized = true;
-      _videoPlayerController.play();
-    }));
-  }
-
 
   @override
   void initState() {
@@ -67,6 +49,8 @@ void initPlayerSecondTime() async {
         await FlutterDownloader.pause(taskId: taskId!);
         
           var file = File(filePath);
+
+          // you can modify to VideoPlayerController.file but it will not working too
           _videoPlayerController = VideoPlayerController.network(
             file.path,
           );
@@ -156,5 +140,24 @@ void initPlayerSecondTime() async {
      IsolateNameServer.removePortNameMapping('downloader_send_port');
      super.dispose();
   }
+
+
+  /*void initPlayerSecondTime() async {
+    Directory appDocDirectory = await getApplicationDocumentsDirectory();
+    String path = "${appDocDirectory.path}/videos";
+    await Directory(path).create(recursive: true);
+
+    filePath =  path + "/" +fileName;
+    var file = File(filePath);
+    /// You can change this to  VideoPlayerController.file
+    _videoPlayerController = VideoPlayerController.network(
+      file.path,
+    );
+    _videoPlayerController.initialize().then((value) => setState(() {
+
+      playerInitialized = true;
+      _videoPlayerController.play();
+    }));
+  }*/
 }
 
